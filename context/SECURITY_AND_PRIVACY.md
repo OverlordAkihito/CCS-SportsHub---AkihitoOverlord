@@ -2,24 +2,23 @@
 
 ## Identity and authorization
 
-Establish identity through a trusted configured authentication flow; never trust client-supplied user identity or roles as proof. Enforce sensitive access rules at trusted backend/service boundaries and test denied paths.
+Current password identity, database-backed sessions, server role checks, ownership scoping, and CSRF controls are described below. Google OIDC and enrollment verification remain unimplemented.
 
-## Design invariants for the intended application
+## Current protections
 
-These are constraints for future app work, not claims that the current app satisfies them:
+- `src/auth.js` hashes passwords with scrypt and salts; session cookies are HttpOnly, SameSite=Lax, opaque, and stored in SQLite as SHA-256 hashes with expiry.
+- Mutating authenticated requests require a session-bound CSRF token; request origins are checked when present.
+- `src/server.js` enforces admin role checks and scopes student bookings, profile edits, and notices to the authenticated user. Roles and ownership are never accepted from ordinary profile input.
+- SQLite enforces foreign keys, allowed role/status values, unique user/event/booking-type records, and nonnegative capacities. Booking creation uses a write transaction to protect capacity under concurrency.
+- Admin event/booking actions are recorded in `audit_log`; booking and event-change notifications are recipient-scoped.
+- Event coordinates are required to be valid, or the administrator must explicitly mark location unavailable before publishing. The app does not request user geolocation.
+- `.env`, local SQLite files, and local data directories are ignored by Git; no secret values or user data are committed.
 
-- Establish identity through a trusted configured authentication flow; never trust client-supplied user identity or roles as proof.
-- Keep privileged credentials out of browser code, committed files, logs, and context documents.
-- Enforce sensitive access rules at trusted backend/service boundaries and test denied paths.
-- Prevent cross-user access to private records; document ownership, deletion, retention, restore, and audit behavior.
-- Make location sharing explicit, opt-in, minimal, and privacy-aware. QR links must not encode secrets.
-- Protect moderation, subscription entitlements, backup, and restore with trusted authorization and auditability.
-- Never expose existing passwords or silently overwrite production data from unverified backups.
+## Known risks and gaps
 
-## Current audit result
-
-The inspected directory is a keeper kit with no application source, backend, auth implementation, or provider configuration (`docs/REPOSITORY_AUDIT.md`). Thus the application's security/privacy posture is **Unable to verify**. The Critical/High entries in the audit are assessment gaps caused by missing source, not verified vulnerabilities in the absent application. No secret values or production records were inspected or recorded.
-
-## Follow-up when the app checkout is available
-
-Trace each sensitive flow from UI through data access to the trusted boundary, inspect configuration variable names without printing values, and test permitted and denied paths where safe. Record unresolved evidence as a gap, not a pass.
+- Google OAuth/OIDC, email verification/recovery, and college enrollment verification are absent. Password account ownership is not externally verified.
+- The first admin is created from a local terminal; production operator identity and protected server access are not established.
+- Rate limiting is process-local and can be bypassed across instances/restarts. There is no monitoring, security review, backup/restore testing, or production deployment evidence.
+- The server has no configured HTTPS terminator. Secure cookies activate only when `NODE_ENV=production`; deployment must provide HTTPS and correct proxy handling.
+- The OSM iframe sends a network request to OpenStreetMap when a verified event map is displayed; no browser geolocation is requested.
+- This is not a completed security assessment. See ranked limitations in `docs/REPOSITORY_AUDIT.md`.

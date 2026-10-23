@@ -1,27 +1,20 @@
 # Project Overview
 
-## Purpose described by the keeper
+## Purpose
 
-The product brief describes a multi-user social/community application with profiles, relationships, messaging, account administration, moderation, privacy controls, subscription-state visibility, and data recovery. These remain intended goals, not verified application behavior.
+Sportshub helps Computer Studies and Computer Science students at Gordon College in Olongapo City discover sports events and tryouts, review venue/schedule/eligibility information, and book participant or spectator places when offered. Authorized administrators manage event details and booking decisions.
 
-## Inspected directory
+## Current product state
 
-The current directory is a context-keeper kit, not the application checkout. Root `README.md` describes the kit's purpose and explicitly says application source was not included. Inventory evidence is recorded in `docs/REPOSITORY_AUDIT.md`.
+This directory now contains a greenfield implementation built on Node.js 24, Node's built-in HTTP server and SQLite module, and a browser-based responsive interface. The implementation and evidence boundaries are tracked in `docs/REPOSITORY_AUDIT.md` and `context/ARCHITECTURE.md`.
 
-## Evidence boundary
-
-The app's language, framework, entry points, backend, persistence, identity provider, hosting, integrations, and feature states remain unknown because app source/configuration is absent. Do not infer app architecture or feature status from the keeper's product brief or tooling.
+The local app currently supports password-based student/admin sessions and the core event and booking flows. Google OAuth/OIDC, enrollment verification, email recovery, and production deployment are not implemented or configured. Empty databases show empty states; no sample events or locations are fabricated.
 
 ## Product principles
 
-1. Multi-user isolation and trusted authorization must be real; hiding a control in the browser is not security.
-2. Keep the smallest coherent architecture capable of required features and preserve working behavior.
-3. Privacy settings and consent must affect actual data returned and actions allowed.
-4. Security-sensitive capabilities require evidence-based validation.
-5. Unconfigured integrations must be labeled unconfigured.
-6. Feature implementation should follow prerequisites and actual repository state.
-7. Each meaningful task should leave accurate context for the next session.
-
-## Next step
-
-Run the first-run audit from the actual app repository root, then establish current architecture and a dependency-aware roadmap from source evidence.
+1. Persist events and bookings in the trusted server/database layer.
+2. Enforce student ownership and administrator roles server-side.
+3. Keep participant and spectator capacities independent and concurrency-safe.
+4. Use only administrator-entered event coordinates; never fabricate map points or request user location.
+5. Treat provider integration and college enrollment verification as distinct questions.
+6. Keep implementation status tied to observed source and tests.

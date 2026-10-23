@@ -6,7 +6,7 @@ import sys
 ROOT = Path(__file__).resolve().parents[1]
 REQUIRED = {
     "AGENTS.md": ["Mandatory context recovery", "Required change-tracking and handoff"],
-    "README.md": ["Install it safely", "What “auto-tracking” means here"],
+    "README.md": ["## Requirements", "## Run locally"],
     "context/SESSION_HANDOFF.md": ["Next action"],
     "context/PROJECT_OVERVIEW.md": ["Purpose"],
     "context/REQUIREMENTS.md": ["Status vocabulary"],

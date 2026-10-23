@@ -46,4 +46,18 @@ This file stores durable decisions, not assumptions disguised as facts. Add an I
 
 ## App-specific technical decisions
 
-No concrete stack/provider/schema/hosting/payment/realtime/storage decision has been confirmed in the keeper source materials. Add decisions here only after repository evidence or an explicit owner decision exists. Link detailed architecture proposals to `docs/ARCHITECTURE_DECISIONS.md` when created.
+### D-007 — Local-first Sportshub foundation
+
+- **Status:** Confirmed for current implementation
+- **Date:** 2026-10-23
+- **Decision:** Use Node.js 24 ES modules, the built-in HTTP server, and SQLite (`node:sqlite`) for the first runnable, single-process implementation in this empty application workspace.
+- **Rationale:** The directory contained the keeper but no app source or dependencies; the available runtime includes SQLite and this keeps the first implementation runnable without dependency installation.
+- **Consequences:** Production hosting, multi-instance persistence, backup/recovery, and operations require a later architecture decision. This choice does not claim production suitability.
+
+### D-008 — Do not hand-write Google OAuth
+
+- **Status:** Confirmed
+- **Date:** 2026-10-23
+- **Decision:** Do not approximate Google OAuth/OIDC without a maintained client library. Current local accounts use scrypt password hashes and database-backed sessions; Google sign-in remains incomplete until a suitable library and owner OAuth configuration are available.
+- **Rationale:** Authentication correctness is security-sensitive and the compatible maintained library was not available in the local runtime; package registry access did not complete.
+- **Consequences:** Google sign-in and verified enrollment remain explicit blockers. Email/password accounts do not claim Gordon College enrollment.

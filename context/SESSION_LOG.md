@@ -20,3 +20,11 @@ Use a date and short heading. Include outcome, important files/decisions, checks
 - Added `docs/REPOSITORY_AUDIT.md`; updated project overview, requirements status, architecture, security/privacy context, work state, and handoff. App capability statuses remain unverified; no app behavior changed.
 - Inventory commands passed; Python context sync/validation were not run because `python`/`py`/`python3` were unavailable. Git status failed because Git could not change to `C:/Users/Jenren B. Datan`.
 - Blocker/next: open the actual application repository and rerun the source-backed audit there before making architecture or implementation decisions.
+
+## 2026-10-23 — Sportshub local application build
+
+- Followed the attached Sportshub brief and universal one-shot workflow. Built a local Node 24/SQLite application with student/admin sessions, event management, booking transactions with separate participant/spectator capacity, notifications, audit records, and responsive public/student/admin screens.
+- Added isolated integration tests, setup documentation, `.env.example`, and current-state audit/context. No dependencies were installed and no sample event/production data was added.
+- Google OAuth/OIDC was deliberately left unimplemented because no maintained OIDC library or owner OAuth configuration was available; enrollment verification is also unresolved. The current email/password account path does not establish college enrollment.
+- `npm run check` and `npm test` passed; browser preview of the landing page, empty event state, and sign-in dialog rendered. Production, OAuth, enrollment, backup/recovery, and deployment remain unverified.
+- Next: resolve OIDC and enrollment/admin eligibility decisions, then make a production persistence/operations architecture decision.

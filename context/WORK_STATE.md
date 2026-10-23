@@ -1,33 +1,33 @@
 # Work State
 
-**Current milestone:** First-run audit of the supplied directory completed as a keeper-kit audit; the application audit is blocked because this directory contains no application source.
+**Current milestone:** Sportshub greenfield implementation delivered for local development with core event/booking flows; provider and production decisions remain open.
 
 ## Active work
 
-- [x] Inventory the supplied keeper-kit directory and document its evidence boundary.
-- [ ] Run the application audit from the actual application repository root.
-
-## Completed
-
-- Inspected root instructions, all required context, README, prompt files, and both context scripts.
-- Inspected the root inventory and file list. Only keeper documentation/scripts are present.
-- Created `docs/REPOSITORY_AUDIT.md` documenting findings, unknowns, risks, and check results without asserting application features.
-- Kept application feature statuses unknown; updated current-state context to reflect the inspected kit and missing app checkout.
+- [x] Inspect the keeper-only workspace and attached Sportshub requirements.
+- [x] Build persisted SQLite server routes, role checks, auth sessions, event management, booking capacity rules, notifications, and responsive UI.
+- [x] Add isolated API integration tests and local setup documentation.
+- [ ] Add maintained Google OIDC and owner-configured OAuth, then decide enrollment verification.
+- [ ] Select production hosting, durable database/session/rate-limit architecture, backups, and monitoring.
 
 ## Checks actually run
 
-- `Get-ChildItem -Force` and `rg --files -g '!node_modules' -g '!vendor' -g '!dist' -g '!build'` — PASS: only keeper/context/script files found.
-- `Get-Command py,python3,node -ErrorAction SilentlyContinue` — PASS: Node found; no Python launcher/runtime found.
-- `python scripts/context_sync.py` — NOT RUN: PowerShell reports `python` is not recognized.
-- `python scripts/context_validate.py` — NOT RUN: PowerShell reports `python` is not recognized.
-- `git status --short --branch` — FAIL: Git reports it cannot change to `C:/Users/Jenren B. Datan`.
-- Application build/lint/type/tests/security/integration/deployment — NOT RUN: app source and configuration absent.
+- `npm run check` — PASS: all server, client, bootstrap and test JavaScript syntax checks completed.
+- `npm test` — PASS: 2 integration tests passed (registration/auth, role denial, event/booking persistence, concurrent last-place capacity, separate capacities, booking decision, capacity release on cancellation, event cancellation notice, and CSRF failures).
+- Browser preview at `http://localhost:3000` — PASS: landing, event discovery empty state, and sign-in dialog rendered; no live event data exists.
+- `python scripts/context_sync.py` with bundled workspace Python — PASS: generated `context/AUTO_STATE.md`.
+- `python scripts/context_validate.py` with bundled workspace Python — PASS: all 18 required keeper files/sections found.
+- `npm run` — PASS: confirmed available `start`, `dev`, `admin:bootstrap`, `check`, and `test` scripts; no build/bundle script exists.
+- `git diff --check` — PASS: no whitespace errors. Git displayed only line-ending normalization warnings for Markdown/Python files.
+- No separate build command exists; this implementation has no compilation/bundling step.
+- No deployment, live OAuth, enrollment verification, map-provider availability, production hardening, or backup/restore test was run.
 
 ## Blockers / unknowns
 
-- Blocker: the actual application repository is not this extracted keeper folder; no app path was provided.
-- Next action: open the actual application root, merge the keeper without overwriting existing project decisions, and rerun the first-run audit there. Then create an evidence-based architecture decision and dependency-aware roadmap.
+- Google OAuth/OIDC library and owner client/callback configuration are not available; no custom OAuth flow was written.
+- No enrollment verification policy or trusted organizational admin provisioning decision exists.
+- This remains single-process SQLite local development; production host, data durability, backups, and shared rate limiting are undecided.
 
 ## Next action
 
-Open the actual application root, merge the keeper without overwriting existing project decisions, and rerun the first-run audit there. Then create an evidence-based architecture decision and dependency-aware roadmap.
+Select a maintained OIDC library and the account/enrollment policy, then implement the provider flow with owner-provided configuration. Keep the current password flow clearly described until the OIDC path is verified.

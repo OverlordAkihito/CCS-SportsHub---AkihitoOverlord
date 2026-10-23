@@ -2,29 +2,29 @@
 
 ## Evidence status at bootstrap
 
-The app architecture cannot be established from the supplied keeper-kit directory; current app architecture remains unknown pending the actual application checkout.
+The first-run inspection found only the context keeper and no app source. The current application architecture below was added during the Sportshub implementation session; see `docs/REPOSITORY_AUDIT.md` for the updated evidence.
 
-## Inspected current state
+## Current implementation
 
-This directory is a context-keeper kit, not the application repository (`README.md`; root inventory documented in `docs/REPOSITORY_AUDIT.md`). Its visible tooling consists of Python scripts:
+- **Runtime:** Node.js 24 ES modules; no third-party runtime dependencies (`package.json`). Uses `node:http`, `node:crypto`, and built-in `node:sqlite`.
+- **HTTP/data boundary:** `src/server.js` serves static files from `public/` and handles JSON API routes. Browser values are untrusted; role, session identity, booking state, and capacity are checked on the server.
+- **Persistence:** `src/db.js` initializes SQLite tables and indexes for users, sessions, events, bookings, notifications, and admin audit records. SQLite WAL and foreign keys are enabled. Booking mutations use `BEGIN IMMEDIATE`, status constraints, unique user/event/type bookings, and separate participant/spectator capacity counts.
+- **Identity/session:** `src/auth.js` stores scrypt password hashes and opaque random session tokens as SHA-256 hashes, with HttpOnly/SameSite cookies, expiration, logout, CSRF checking, and process-local attempt throttling. Google OAuth/OIDC is not implemented; this is a material requirement gap.
+- **Roles:** public self-registration creates `student`; `src/bootstrap-admin.js` creates the initial `admin` in a terminal. Admin APIs use server session role checks.
+- **UI:** `public/index.html`, `public/styles.css`, and `public/app.js` implement landing, discovery, event detail, map, student dashboard, profile, and admin workspace. OSM embed is external and requires network; only entered coordinates are mapped.
+- **Configuration:** `PORT`, `DATABASE_PATH`, and `NODE_ENV` are read from the process environment/`.env`; secret values are not committed. No provider keys are configured.
 
-- `scripts/context_sync.py` reads Git metadata and filesystem path metadata to generate `context/AUTO_STATE.md`; its source states that it does not read source/configuration contents.
-- `scripts/context_validate.py` checks keeper-file presence and required text. It does not validate app behavior.
-- `scripts/context_watch.py` is listed in the kit README as an optional context snapshot watcher; it is not an application service.
+## Important constraints and gaps
 
-No app entry points, manifests, schema, migrations, backend, identity/session code, storage, or provider configuration were found in this directory. The actual application architecture is **unknown** because the app checkout is absent. See `docs/REPOSITORY_AUDIT.md` for inventory and check results.
+- No maintained OIDC library was available in the bundled modules and the package-registry query did not complete. Google login was not approximated with hand-written OAuth. Add a maintained OIDC integration when dependencies and owner OAuth configuration are available.
+- This is a local, single-process development architecture. SQLite and process-local throttling are not a production multi-instance design. There is no backup/restore procedure or deployment configuration.
+- The built-in Node SQLite API requires Node 24 as declared in `package.json`.
+- Map tiles/frames are served by OpenStreetMap; attribution is included. No map provider key is required or stored.
 
-## Open decisions
+## Open architecture decisions
 
-No application architecture decisions can be made from this kit. Persistence, auth, hosting, realtime transport, payment, and external backup choices remain open unless established in the actual application repository or by its owner.
+- Production host, database/session service, backup and restore, monitoring and rate-limit store.
+- Google OAuth client and callback configuration; enrollment-verification method; who can be an administrator and how additional admins are provisioned.
+- Retention and account deletion/recovery behavior.
 
-## Guardrails
-
-1. Do not infer application architecture or features from the product brief or keeper utilities.
-2. Do not select a framework, backend, database, provider, or host without repository evidence or an explicit owner decision.
-3. Sensitive authorization must be enforced at a trusted backend/service boundary.
-4. Record proposed target architecture separately from verified current facts.
-
-## After app checkout is available
-
-Audit real source, tests, manifests, configuration names, schemas/migrations, and trusted service boundaries. Then write the target decision and dependency-aware roadmap in `docs/ARCHITECTURE_DECISIONS.md`, keeping proposals distinct from current-state facts.
+See `docs/REPOSITORY_AUDIT.md` for evidence, validation, and ranked risks.

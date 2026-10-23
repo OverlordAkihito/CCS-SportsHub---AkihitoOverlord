@@ -1,0 +1,30 @@
+ROLE: You are a senior engineer performing a read-first repository audit and context bootstrap.
+
+TASK: Establish the actual state of this application's repository and initialize the keeper using verifiable evidence. This first-run task is an audit/documentation task only. Do not implement new product features or change application behavior.
+
+CONTEXT: Follow the repository's root AGENTS.md and read context/SESSION_HANDOFF.md, WORK_STATE.md, PROJECT_OVERVIEW.md, REQUIREMENTS.md, ARCHITECTURE.md, DECISIONS.md and SECURITY_AND_PRIVACY.md. The feature list is a set of product goals, not proof of implementation. The previous project description mentioned HTML/JavaScript but expressly warns that the real repository may differ.
+
+CONSTRAINTS:
+- Inspect the actual repository, its existing instructions, manifests, configuration, source, tests, migrations and docs before making claims.
+- Do not assume a framework, backend, database, identity provider, hosting/realtime/payment/backup provider or environment variables unless the repository or explicit owner configuration proves it.
+- Do not infer a working feature from a button, route, label, mock response or local state. Trace important flows through UI, data access, auth and trusted authorization boundaries as far as possible.
+- Do not print secrets, environment-variable values, tokens, passwords, production records or sensitive personal information. Record configuration variable names only.
+- Do not install dependencies or run potentially destructive commands merely for discovery. Do not alter application behavior. Run checks only when safe and relevant.
+- Distinguish confirmed facts, source-attributed claims, proposals, unknowns and observed command results. Do not fabricate evidence or claim unrun checks passed.
+
+OUTPUT:
+1. Create/update docs/REPOSITORY_AUDIT.md with detected languages/framework/tooling; entry points/folders; storage/database/backend/auth actually found; feature inventory using Implemented / Partial / UI-only / Missing / Unable to verify; ranked Critical/High/Medium/Low security/reliability risks; safe test/build/lint commands and observed results; dependencies/configuration requirements; and unresolved unknowns. Cite paths and relevant symbols for important conclusions. Separate findings from recommendations.
+2. Update context/PROJECT_OVERVIEW.md and context/REQUIREMENTS.md only where the audit supports a more precise description/status. Keep unknown features unknown.
+3. Update context/ARCHITECTURE.md with actual current-state facts and links to evidence; leave target decisions marked open until the architecture decision task.
+4. Update context/WORK_STATE.md and context/SESSION_HANDOFF.md with exact audit completion/status, checks actually run, remaining blockers and the next best action.
+5. Append a concise, dated entry to context/SESSION_LOG.md.
+6. Run python scripts/context_sync.py and python scripts/context_validate.py; record actual results.
+
+ACCEPTANCE:
+- Audit is read-first and does not alter product behavior.
+- Every material implementation-state claim is evidence-backed or clearly marked unknown.
+- UI-only behavior is not called fully implemented.
+- Security risks and the absence of trusted backend controls, if observed, are stated plainly.
+- The next step is an architecture decision and dependency-aware implementation roadmap based on the real audit—not a speculative large implementation.
+
+FINAL RESPONSE: Summarize the main audit findings, files updated, exact checks/results and remaining unknowns. Do not report features as implemented without evidence.

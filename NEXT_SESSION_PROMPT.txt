@@ -1,0 +1,13 @@
+TASK: [One clear outcome]
+
+Before acting, follow AGENTS.md. Read context/SESSION_HANDOFF.md and context/WORK_STATE.md, then the relevant requirements, architecture and security notes. Run `python scripts/context_sync.py` and `python scripts/context_validate.py` when available. Inspect the current code and tests relevant to this task; do not treat context notes or the feature list as proof that the code still behaves that way.
+
+ROLE: Use the engineering role appropriate to the task.
+CONTEXT: [Relevant requirement, file/flow, existing behavior, issue evidence, architecture decision or constraint. Identify assumptions.] 
+CONSTRAINTS: Preserve correct existing behavior. Follow repository patterns and security/privacy/data-integrity requirements. Avoid unrelated rewrites, duplicate implementations, unnecessary dependencies, placeholder success states and unconfigured provider assumptions. Never invent facts or claim unrun checks passed. Ask only if a missing choice creates a genuine safety, irreversible-data, owner-authorization or provider blocker; otherwise choose a safe reversible default.
+OUTPUT: Complete the actual implementation or deliverable, plus focused tests/docs when appropriate. State key files and behavior changed.
+ACCEPTANCE: [Observable completion conditions, including relevant error/permission/edge cases.]
+VALIDATION: Run relevant tests/lint/type/build/manual checks. Report actual commands and PASS/FAIL/NOT RUN with a reason for checks not run. Inspect the diff for unintended changes and secrets.
+HANDOFF: Update the relevant files in context/ (requirements, architecture, decisions, security/privacy, work state, session handoff, session log), refresh `AUTO_STATE.md` with `python scripts/context_sync.py`, and run `python scripts/context_validate.py`. Do not mark a requirement complete without evidence. Record blockers and the single best next action.
+
+Keep this request focused; do not run every prompt or rebuild the entire app when the repository evidence supports a smaller change.

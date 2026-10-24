@@ -26,6 +26,8 @@ npm run admin:bootstrap
 
 The bootstrap refuses to create a second initial administrator and reads the password without echoing it. Keep the local database private. Public self-registration creates student accounts only.
 
+If you forget an admin email or password, run `npm run admin:recover` from the project root in an interactive terminal. It lists admin emails, requires you to select and confirm the account, then sets a new password without displaying it. Existing sessions for that account are revoked. This command has local database access and must only be run by a trusted operator on the machine hosting the app.
+
 ## Current capabilities
 
 - Public landing page, searchable event discovery, event details, empty/error states, and an OpenStreetMap view for events whose coordinates an administrator has verified.

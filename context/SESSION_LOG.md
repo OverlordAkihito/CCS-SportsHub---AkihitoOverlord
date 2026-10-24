@@ -28,3 +28,8 @@ Use a date and short heading. Include outcome, important files/decisions, checks
 - Google OAuth/OIDC was deliberately left unimplemented because no maintained OIDC library or owner OAuth configuration was available; enrollment verification is also unresolved. The current email/password account path does not establish college enrollment.
 - `npm run check` and `npm test` passed; browser preview of the landing page, empty event state, and sign-in dialog rendered. Production, OAuth, enrollment, backup/recovery, and deployment remain unverified.
 - Next: resolve OIDC and enrollment/admin eligibility decisions, then make a production persistence/operations architecture decision.
+# 2026-10-24 — Local admin credential recovery
+
+- Added `npm run admin:recover` to show administrator emails and reset a selected account password through an interactive local terminal. It requires explicit `RESET` confirmation, suppresses password echo, and revokes existing sessions for the account.
+- Documented recovery in README and updated auth/security architecture, requirements, and handoff context.
+- `npm run check`, `npm test` (2 passed), `git diff --check`, `scripts/context_sync.py`, and `scripts/context_validate.py` passed. Did not run recovery against the user's live database.

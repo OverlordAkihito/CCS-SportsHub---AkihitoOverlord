@@ -18,6 +18,7 @@ Current password identity, database-backed sessions, server role checks, ownersh
 
 - Google OAuth/OIDC, email verification/recovery, and college enrollment verification are absent. Password account ownership is not externally verified.
 - The first admin is created from a local terminal; production operator identity and protected server access are not established.
+- A trusted local operator can recover a forgotten admin email/password with `npm run admin:recover`; the command reveals admin emails to that operator, requires explicit confirmation before setting a new password, reads the new password without echo, and revokes that admin's existing sessions. Protect terminal access and the database file.
 - Rate limiting is process-local and can be bypassed across instances/restarts. There is no monitoring, security review, backup/restore testing, or production deployment evidence.
 - The server has no configured HTTPS terminator. Secure cookies activate only when `NODE_ENV=production`; deployment must provide HTTPS and correct proxy handling.
 - The OSM iframe sends a network request to OpenStreetMap when a verified event map is displayed; no browser geolocation is requested.

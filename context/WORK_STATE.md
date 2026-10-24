@@ -1,12 +1,13 @@
 # Work State
 
-**Current milestone:** Sportshub greenfield implementation delivered for local development with core event/booking flows; provider and production decisions remain open.
+**Current milestone:** Sportshub local implementation with core event/booking flows and local operator-assisted admin credential recovery; provider and production decisions remain open.
 
 ## Active work
 
 - [x] Inspect the keeper-only workspace and attached Sportshub requirements.
 - [x] Build persisted SQLite server routes, role checks, auth sessions, event management, booking capacity rules, notifications, and responsive UI.
 - [x] Add isolated API integration tests and local setup documentation.
+- [x] Add interactive local admin recovery command to list admin email addresses and reset a selected password while revoking active sessions.
 - [ ] Add maintained Google OIDC and owner-configured OAuth, then decide enrollment verification.
 - [ ] Select production hosting, durable database/session/rate-limit architecture, backups, and monitoring.
 
@@ -20,6 +21,8 @@
 - `npm run` — PASS: confirmed available `start`, `dev`, `admin:bootstrap`, `check`, and `test` scripts; no build/bundle script exists.
 - `git diff --check` — PASS: no whitespace errors. Git displayed only line-ending normalization warnings for Markdown/Python files.
 - No separate build command exists; this implementation has no compilation/bundling step.
+- `npm run check` includes syntax validation of `src/recover-admin.js`.
+- `npm run admin:recover` was not run against the user's live database; recovery remains a user-operated local command.
 - No deployment, live OAuth, enrollment verification, map-provider availability, production hardening, or backup/restore test was run.
 
 ## Blockers / unknowns
@@ -30,4 +33,4 @@
 
 ## Next action
 
-Select a maintained OIDC library and the account/enrollment policy, then implement the provider flow with owner-provided configuration. Keep the current password flow clearly described until the OIDC path is verified.
+Run `npm run admin:recover` from the project root in an interactive terminal to identify the forgotten admin email and set a new password; then sign in at `http://localhost:3000`. After access is restored, select a maintained OIDC library and account/enrollment policy.
